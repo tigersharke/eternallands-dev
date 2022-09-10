@@ -1,5 +1,5 @@
 PORTNAME=	Eternal-Lands
-DISTVERSION=	g20220510
+DISTVERSION=	g20220511
 CATEGORIES=	games
 PKGNAMESUFFIX=	-dev
 DISTNAME=	${GH_TAGNAME}
@@ -38,7 +38,7 @@ USE_XORG+=	x11 sm ice xext
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	raduprv
 GH_PROJECT=	Eternal-Lands
-GH_TAGNAME=	bd368abd3ac360fabe80cb8ea094e3b12bed552e
+GH_TAGNAME=	a53b0042c8b020e385ffe4ca47ee1366fdaaef0d
 CMAKE_MODULE_LINKER_FLAGS=
 CMAKE_SHARED_LINKER_FLAGS=
 
@@ -229,6 +229,10 @@ NLS_LDFLAGS=			-L${LOCALBASE}/lib
 #  when it is necessary. Can I incorporate the data install into the el port as it is a requirement?
 #  Something to investigate and figure out, something in my collection pulls two git repos, maybe that
 #  could be adjusted to have one portion not a build install as this is.
+#
+#  I need to figure out how to modify the el.ini file that may be installed to fit FreeBSD rather than Windows/Linux.
+#  At present the data directory default is the weird Windows path method. There may be other things to adjust for 
+#  sane defaults perhaps.
 
 .include <bsd.port.options.mk>
 
