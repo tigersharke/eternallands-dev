@@ -1,5 +1,5 @@
 PORTNAME=	Eternal-Lands
-DISTVERSION=	g20220401
+DISTVERSION=	g20220520
 CATEGORIES=	games
 PKGNAMESUFFIX=	-dev
 DISTNAME=	${GH_TAGNAME}
@@ -38,7 +38,7 @@ USE_XORG+=	x11 sm ice xext
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	raduprv
 GH_PROJECT=	Eternal-Lands
-GH_TAGNAME=	0beb62a36de62a9a88e49850991111cec568f108
+GH_TAGNAME=	0c6335c3bf8bdbfbb7bcfb2eab75f00e26ad1a7b
 CMAKE_MODULE_LINKER_FLAGS=
 CMAKE_SHARED_LINKER_FLAGS=
 
@@ -151,6 +151,8 @@ CURL_CMAKE_BOOL=		ENABLE_CURL
 CURL_LIB_DEPENDS=		libcurl.so:ftp/curl
 SOUND_DESC=			Enable sound via openal-soft
 SOUND_CMAKE_BOOL=		ENABLE_SOUND
+SOUND_LIB_DEPENDS=		libvorbis.so:audio/libvorbis \
+				libvorbisfile.so:audio/libvorbis
 FREETYPE_DESC=			Support for TrueType fonts with unicode
 FREETYPE_CMAKE_BOOL=		ENABLE_FREETYPE
 FREETYPE_LIB_DEPENDS=		libfreetype.so:print/freetype2
