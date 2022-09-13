@@ -1,5 +1,5 @@
 PORTNAME=	Eternal-Lands
-DISTVERSION=	g20220511
+DISTVERSION=	g20220521
 CATEGORIES=	games
 PKGNAMESUFFIX=	-dev
 DISTNAME=	${GH_TAGNAME}
@@ -12,6 +12,7 @@ COMMENT=	Client for Eternal Lands MMORPG 3d fantasy game
 #BUILD_DEPENDS=
 #RUN_DEPENDS=
 LIB_DEPENDS+=	libcal3d.so:graphics/cal3d \
+		libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis \
 		libvorbisfile.so:audio/libvorbis \
 		libpng16.so:graphics/png
@@ -32,13 +33,14 @@ CMAKE_ARGS+=	-DIconv_LIBRARIES="-L${LOCALBASE}/lib -liconv" \
 		-DEXEC="el"
 USE_GNOME=	libxml2
 USE_SDL=	sdl2 net2 image2 ttf2
-USE_GL+=	gl
+USE_GL+=	gl glu
+#USE_GL+=	gl
 #USE_GL+=	egl glx gl glu
 USE_XORG+=	x11 sm ice xext
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	raduprv
 GH_PROJECT=	Eternal-Lands
-GH_TAGNAME=	a53b0042c8b020e385ffe4ca47ee1366fdaaef0d
+GH_TAGNAME=	968f90742b68659b201ea8c0790be0e60267b750
 CMAKE_MODULE_LINKER_FLAGS=
 CMAKE_SHARED_LINKER_FLAGS=
 
@@ -104,7 +106,6 @@ OPTIONS_DEFINE=			CURL DOCS EXAMPLES FREETYPE GLES LUAJIT NCURSES NLS SOUND SYST
 OPTIONS_DEFAULT=		CURL FREETYPE LUAJIT SOUND SYSTEM_GMP SYSTEM_JSONCPP CLIENT GLVND
 OPTIONS_MULTI=			COMP
 OPTIONS_RADIO=			GRAPHICS
-OPTIONS_GROUP=			DATABASE
 
 COMP_DESC=			Software components
 OPTIONS_MULTI_COMP=		CLIENT
@@ -132,9 +133,6 @@ LEGACY_CMAKE_BOOL=		ENABLE_LEGACY
 LEGACY_CMAKE_ON=		-DOPENGL_GL_PREFERENCE="LEGACY"
 GLES_CMAKE_BOOL=		ENABLE_GLES
 
-#DATABASE_DESC=			Database support
-#OPTIONS_GROUP_DATABASE=		LEVELDB PGSQL REDIS SPATIAL
-
 OPTIONS_SUB=			yes
 
 CLIENT_DESC=			Build client
@@ -143,8 +141,6 @@ CLIENT_LIB_DEPENDS=		libpng.so:graphics/png
 CLIENT_USES=			gl jpeg xorg
 CLIENT_USE=			GL=gl,glu \
 				XORG=ice,sm,x11,xext,xxf86vm
-#SERVER_DESC=			Build server
-#SERVER_CMAKE_BOOL=		BUILD_SERVER
 
 CURL_DESC=			Enable cURL support for fetching media
 CURL_CMAKE_BOOL=		ENABLE_CURL
@@ -164,75 +160,34 @@ LUAJIT_DESC=			LuaJIT support (lang/luajit-openresty)
 LUAJIT_CMAKE_BOOL=		ENABLE_LUAJIT REQUIRE_LUAJIT
 LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit-openresty
 
-#LEVELDB_DESC=			Enable LevelDB backend
-#LEVELDB_CMAKE_BOOL=		ENABLE_LEVELDB
-#LEVELDB_LIB_DEPENDS=		libleveldb.so:databases/leveldb
-#PGSQL_DESC=			Enable PostgreSQL map backend
-#PGSQL_USES=			pgsql
-#PGSQL_CMAKE_BOOL=		ENABLE_POSTGRESQL
-#REDIS_DESC=			Enable Redis backend
-#REDIS_CMAKE_BOOL=		ENABLE_REDIS
-#REDIS_LIB_DEPENDS=		libhiredis.so:databases/hiredis
-#SPATIAL_DESC=			Enable SpatialIndex (Speeds up AreaStores)
-#SPATIAL_LIB_DEPENDS=		libspatialindex.so:devel/spatialindex
-#SPATIAL_CMAKE_BOOL=		ENABLE_SPATIAL
-
 NLS_DESC=			Native Language Support (ENABLE_GETTEXT)
 NLS_CMAKE_BOOL=			ENABLE_GETTEXT
 NLS_USES=			gettext
 NLS_LDFLAGS=			-L${LOCALBASE}/lib
 
-#TOUCH_DESC=			Build with touch interface support
-#TOUCH_CMAKE_BOOL=		ENABLE_TOUCH
-
-#PROMETHEUS_DESC=		Build with Prometheus metrics exporter
-#PROMETHEUS_CMAKE_BOOL=		ENABLE_PROMETHEUS
-#PROMETHEUS_USES=		gettext
-
-# ===> Staging for Eternal-Lands-dev-g20220312
-# ===> Eternal-Lands-dev-g20220312 depends on file: /usr/local/lib/libcrypto.so.47 - found
-# ===> Eternal-Lands-dev-g20220312 depends on file: /usr/local/libdata/pkgconfig/x11.pc - found
-# ===> Eternal-Lands-dev-g20220312 depends on file: /usr/local/libdata/pkgconfig/sm.pc - found
-# ===> Eternal-Lands-dev-g20220312 depends on file: /usr/local/libdata/pkgconfig/ice.pc - found
-# ===> Eternal-Lands-dev-g20220312 depends on file: /usr/local/libdata/pkgconfig/xext.pc - found
-# ===> Generating temporary packing list
-# [ 0% 1/1] cd /usr/home/tigersharke/Ported_Software/games/eternallands/work/.build && /usr/local/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-# -- Install configuration: "Release"
-# -- Installing: /usr/home/tigersharke/Ported_Software/games/eternallands/work/stage/usr/local/bin/el.bsd.bin
-# -- Set runtime path of "/usr/home/tigersharke/Ported_Software/games/eternallands/work/stage/usr/local/bin/el.bsd.bin" to "/usr/local/lib"
-# ====> Compressing man pages (compress-man)
-# ====> Running Q/A tests (stage-qa)
-# Error: /usr/local/bin/el.bsd.bin is linked to /usr/local/lib/libGL.so.1 from graphics/libglvnd but it is not declared as a dependency
-# Warning: you need USE_GL+=gl
-# Error: /usr/local/bin/el.bsd.bin is linked to /usr/local/lib/libGLU.so.1 from graphics/libGLU but it is not declared as a dependency
-# Warning: you need USE_GL+=glu
-# Error: /usr/local/bin/el.bsd.bin is linked to /usr/local/lib/libiconv.so.2 from converters/libiconv but it is not declared as a dependency
 # Warning: you need USES+=iconv, USES+=iconv:wchar_t, or USES+=iconv:translit depending on needs
-# ===> Installing for Eternal-Lands-dev-g20220312
-# ===> Checking if Eternal-Lands-dev is already installed
-# ===> Registering installation for Eternal-Lands-dev-g20220312
-# Installing Eternal-Lands-dev-g20220312...
-# ===> Cleaning for Eternal-Lands-dev-g20220312
-#
-# https://github.com/raduprv/Eternal-Lands/search?q=servers.lst
-#
 # --------------------------------------------------------------------
 #
-#  This presently builds, and if the data files are installed, and we run el from there, it mostly works.
 #  Unsure if a build issue or something else, but although I can get it to connect and function, it seems
 #  particularly laggy and often needs a resync, also, quitting the client is not always easy and must be
-#  killed instead.
+#  killed instead. This might be a local issue unique to my situation, 4k screen with a somewhat large
+#  game window.
 #
-#  The servers.lst file was tracked down last time I worked on this using the url above.
+#  If I need to locate a more current version, maybe:
+#  https://github.com/raduprv/Eternal-Lands/search?q=servers.lst
 #
 #  For continuity and certainty, I'll be making an eternal lands data repo as well, so I can update that
 #  when it is necessary. Can I incorporate the data install into the el port as it is a requirement?
 #  Something to investigate and figure out, something in my collection pulls two git repos, maybe that
 #  could be adjusted to have one portion not a build install as this is.
 #
-#  I need to figure out how to modify the el.ini file that may be installed to fit FreeBSD rather than Windows/Linux.
-#  At present the data directory default is the weird Windows path method. There may be other things to adjust for 
-#  sane defaults perhaps.
+#  In the eternallands-data port the el.ini file was modified and dos2unix used for files needing it,
+#  sane defaults now used in this config file as well as the proper FreeBSD data_dir location defined.
+#  The servers.lst file is included among those data files. If the sound or music files are installed
+#  as part of the data files, they are located (properly) within the /usr/local/share/Eternal-Lands-data
+#  directory.
+#
+#  The data port installs fonts, perhaps this could be avoided if "linux glue" is smart enough.
 
 .include <bsd.port.options.mk>
 
