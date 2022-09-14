@@ -19,7 +19,8 @@ LIB_DEPENDS+=	libcal3d.so:graphics/cal3d \
 
 USES=		cmake ssl openal iconv \
 		compiler:c++17-lang gnome \
-		openal:al,alut sdl xorg
+		openal:al,alut sdl xorg \
+		pkgconfig:build
 
 #LDFLAGS+=	-L${ICONV_LIB}
 CONFLICTS=	el
@@ -33,10 +34,10 @@ CMAKE_ARGS+=	-DIconv_LIBRARIES="-L${LOCALBASE}/lib -liconv" \
 		-DEXEC="el"
 USE_GNOME=	libxml2
 USE_SDL=	sdl2 net2 image2 ttf2
-USE_GL+=	gl glu
+USE_GL+=	gl glu opengl
 #USE_GL+=	gl
 #USE_GL+=	egl glx gl glu
-USE_XORG+=	x11 sm ice xext
+USE_XORG+=	x11 sm ice xext xaw
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	raduprv
 GH_PROJECT=	Eternal-Lands
@@ -46,8 +47,7 @@ CMAKE_SHARED_LINKER_FLAGS=
 
 WRKSRC=	${WRKDIR}/${PORTNAME}-${GH_TAGNAME}
 
-# Bulk of these options pulled from minetest-dev unofficial port.
-# Actual cmake options:
+# Some cmake options:
 #
 # FREETYPE_INCLUDE_DIR_freetype2:PATH=/usr/local/include/freetype2
 # FREETYPE_INCLUDE_DIR_ft2build:PATH=/usr/local/include/freetype2
@@ -100,6 +100,21 @@ WRKSRC=	${WRKDIR}/${PORTNAME}-${GH_TAGNAME}
 # VORBIS_INCLUDE_DIR:PATH=/usr/local/include
 # VORBIS_LIBRARY:FILEPATH=/usr/local/lib/libvorbis.so
 # VORBIS_LIBRARY_DEBUG:FILEPATH=/usr/local/lib/libvorbis.so
+#
+# --------------------------------------------------------------------
+#
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/lib/libcrypto.so.47 - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/lib/libncurses.so.6 - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/x11.pc - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/sm.pc - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/ice.pc - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/xext.pc - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/xaw7.pc - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/ice.pc - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/sm.pc - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/x11.pc - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/xext.pc - found
+# ===>   Eternal-Lands-dev-g20220521 depends on file: /usr/local/libdata/pkgconfig/xxf86vm.pc - found
 
 OPTIONS_DEFINE=			CURL DOCS EXAMPLES FREETYPE GLES LUAJIT NCURSES NLS SOUND SYSTEM_GMP \
 				SYSTEM_JSONCPP
@@ -176,10 +191,10 @@ NLS_LDFLAGS=			-L${LOCALBASE}/lib
 #  If I need to locate a more current version, maybe:
 #  https://github.com/raduprv/Eternal-Lands/search?q=servers.lst
 #
-#  For continuity and certainty, I'll be making an eternal lands data repo as well, so I can update that
-#  when it is necessary. Can I incorporate the data install into the el port as it is a requirement?
-#  Something to investigate and figure out, something in my collection pulls two git repos, maybe that
-#  could be adjusted to have one portion not a build install as this is.
+#  For continuity and certainty, there is an eternal lands data repo as well, so I can update that
+#  when it is necessary. Can I incorporate the data portion of the install into the el port as it is
+#  a requirement? Something to investigate and figure out, I believe something in my collection pulls
+#  two git repos, maybe that could be adjusted to have one portion not a build install as this is.
 #
 #  In the eternallands-data port the el.ini file was modified and dos2unix used for files needing it,
 #  sane defaults now used in this config file as well as the proper FreeBSD data_dir location defined.
