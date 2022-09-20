@@ -15,51 +15,51 @@ LIB_DEPENDS+=	libcal3d.so:graphics/cal3d \
 		libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis \
 		libvorbisfile.so:audio/libvorbis \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
 USES=		cmake ssl openal iconv \
 		compiler:c++17-lang gnome \
+		desktop-file-utils \
 		openal:al,alut sdl xorg \
 		pkgconfig:build
 
 #LDFLAGS+=	-L${ICONV_LIB}
+LDFLAGS+=       -L${LOCALBASE}/lib ${ICONV_LIB} -lX11
 CONFLICTS=	el
 CMAKE_ARGS+=	-DIconv_LIBRARIES="-L${LOCALBASE}/lib -liconv" \
-		-DBUILD_UNITTESTS="FALSE" \
+		-DBUILD_UNITTESTS="TRUE" \
 		-DCMAKE_BUILD_TYPE="MinSizeRel" \
 		-DCMAKE_VERBOSE_MAKEFILE="TRUE" \
+		-DCMAKE_BUILD_TYPE="MinSizeRel" \
 		-DCUSTOM_EXAMPLE_CONF_DIR="${PREFIX}/etc" \
 		-DCUSTOM_MANDIR="${PREFIX}/man" \
 		-DOPENGL_xmesa_INCLUDE_DIR="${PREFIX}/lib" \
+		-DMARCHNATIVE="ON" \
 		-DLOCAL_NLOHMANN_JSON="ON" \
 		-DUSE_SYSTEM_JSON="ON" \
 		-DJSON_FILES="ON" \
 		-DEXEC="el"
 USE_GNOME=	libxml2
 USE_SDL=	sdl2 net2 image2 ttf2
-USE_GL+=	gl glu opengl
+USE_GL+=	gl glu
 #USE_GL+=	gl
 #USE_GL+=	egl glx gl glu
-USE_XORG+=	x11 sm ice xext xaw
+USE_XORG+=	ice sm x11 xcb xres xshmfence xau xaw xcomposite \
+		xcursor xdamage xdmcp xext xfixes xft xi xinerama \
+		xkbfile xmu xpm xrandr xrender xt xv xxf86vm
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	raduprv
 GH_PROJECT=	Eternal-Lands
 GH_TAGNAME=	4e8d05d27935a6fdc108aeb0792046a466cf183c
-CMAKE_MODULE_LINKER_FLAGS=
-CMAKE_SHARED_LINKER_FLAGS=
+#CMAKE_MODULE_LINKER_FLAGS=
+#CMAKE_SHARED_LINKER_FLAGS=
 
 WRKSRC=	${WRKDIR}/${PORTNAME}-${GH_TAGNAME}
 
-OPTIONS_DEFINE=			CURL DOCS EXAMPLES FREETYPE GLES LUAJIT NCURSES NLS SOUND SYSTEM_GMP \
-				SYSTEM_JSONCPP
-OPTIONS_DEFAULT=		CURL FREETYPE LUAJIT SOUND SYSTEM_GMP SYSTEM_JSONCPP CLIENT GLVND
-OPTIONS_MULTI=			COMP
+OPTIONS_DEFINE=			DOCS EXAMPLES FREETYPE NLS SOUND SYSTEM_GMP SYSTEM_JSONCPP
+OPTIONS_DEFAULT=		CURL FREETYPE LUAJIT SOUND SYSTEM_GMP SYSTEM_JSONCPP GLVND
+
 OPTIONS_RADIO=			GRAPHICS
-
-COMP_DESC=			Software components
-OPTIONS_MULTI_COMP=		CLIENT
-
-OPTIONS_RADIO_GRAPHICS=		GLVND LEGACY
 
 SYSTEM_GMP_DESC=		Use gmp from ports (ENABLE_SYSTEM_GMP)
 SYSTEM_GMP_CMAKE_BOOL=		ENABLE_SYSTEM_GMP
@@ -71,29 +71,29 @@ SYSTEM_JSONCPP_CMAKE_BOOL=	ENABLE_SYSTEM_JSONCPP
 SYSTEM_JSONCPP_CMAKE_ON=	-DJSON_INCLUDE_DIR="${PREFIX}/include/jsoncpp"
 SYSTEM_JSONCPP_LIB_DEPENDS=	libjsoncpp.so:devel/jsoncpp
 
+OPTIONS_RADIO_GRAPHICS=		GLVND LEGACY GLES
 GRAPHICS_DESC=			Graphics support
-GLVND_DESC=			Use libOpenGL or libGLX
-LEGACY_DESC=			Use libGL - where GLVND may be broken on nvidia
-GLES_DESC=			Use libOpenGLES instead of libOpenGL
 
+GLVND_DESC=			Use libOpenGL or libGLX
 GLVND_CMAKE_BOOL=		ENABLE_GLVND
 GLVND_CMAKE_ON=			-DOPENGL_GL_PREFERENCE="GLVND"
+GLVND_USE=			GL+=opengl
+GLVND_PREVENTS=			GLES
+
+LEGACY_DESC=			Use libGL - where GLVND may be broken on nvidia
 LEGACY_CMAKE_BOOL=		ENABLE_LEGACY
 LEGACY_CMAKE_ON=		-DOPENGL_GL_PREFERENCE="LEGACY"
+LEGACY_USE=			GL+=opengl
+LEGACY_PREVENTS=		GLES
+
+GLES_DESC=			Use libOpenGLES instead of libOpenGL
 GLES_CMAKE_BOOL=		ENABLE_GLES
+GLES_USE=			GL+=glesv2
+GLES_PREVENTS=			GLVND LEGACY
+# dependency?
 
 OPTIONS_SUB=			yes
 
-CLIENT_DESC=			Build client
-CLIENT_CMAKE_BOOL=		BUILD_CLIENT
-CLIENT_LIB_DEPENDS=		libpng.so:graphics/png
-CLIENT_USES=			gl jpeg xorg
-CLIENT_USE=			GL=gl,glu \
-				XORG=ice,sm,x11,xext,xxf86vm
-
-CURL_DESC=			Enable cURL support for fetching media
-CURL_CMAKE_BOOL=		ENABLE_CURL
-CURL_LIB_DEPENDS=		libcurl.so:ftp/curl
 SOUND_DESC=			Enable sound via openal-soft
 SOUND_CMAKE_BOOL=		ENABLE_SOUND
 SOUND_LIB_DEPENDS=		libvorbis.so:audio/libvorbis \
@@ -101,13 +101,6 @@ SOUND_LIB_DEPENDS=		libvorbis.so:audio/libvorbis \
 FREETYPE_DESC=			Support for TrueType fonts with unicode
 FREETYPE_CMAKE_BOOL=		ENABLE_FREETYPE
 FREETYPE_LIB_DEPENDS=		libfreetype.so:print/freetype2
-NCURSES_DESC=			Enable ncurses console
-NCURSES_CMAKE_BOOL=		ENABLE_CURSES
-NCURSES_USES=			ncurses
-
-LUAJIT_DESC=			LuaJIT support (lang/luajit-openresty)
-LUAJIT_CMAKE_BOOL=		ENABLE_LUAJIT REQUIRE_LUAJIT
-LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit-openresty
 
 NLS_DESC=			Native Language Support (ENABLE_GETTEXT)
 NLS_CMAKE_BOOL=			ENABLE_GETTEXT
