@@ -1,5 +1,5 @@
 PORTNAME=	Eternal-Lands
-DISTVERSION=	g20220915
+DISTVERSION=	g20221029
 CATEGORIES=	games
 PKGNAMESUFFIX=	-dev
 DISTNAME=	${GH_TAGNAME}
@@ -7,6 +7,7 @@ DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}
 
 MAINTAINER=	nope@nothere
 COMMENT=	Client for Eternal Lands MMORPG 3d fantasy game
+WWW=		http://www.eternal-lands.com/
 
 #LICENSE=
 BUILD_DEPENDS=	nlohmann-json>=3.6.1:devel/nlohmann-json
@@ -50,7 +51,7 @@ USE_XORG+=	ice sm x11 xcb xres xshmfence xau xaw xcomposite \
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	raduprv
 GH_PROJECT=	Eternal-Lands
-GH_TAGNAME=	4e8d05d27935a6fdc108aeb0792046a466cf183c
+GH_TAGNAME=	3abbade8466cc1df6a68fc89582a1bfcd4194d2a
 #CMAKE_MODULE_LINKER_FLAGS=
 #CMAKE_SHARED_LINKER_FLAGS=
 
