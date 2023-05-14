@@ -1,5 +1,5 @@
 PORTNAME=	Eternal-Lands
-DISTVERSION=	g20221120
+DISTVERSION=	g20230416
 CATEGORIES=	games
 PKGNAMESUFFIX=	-dev
 DISTNAME=	${GH_TAGNAME}
@@ -13,14 +13,14 @@ WWW=		http://www.eternal-lands.com/
 BUILD_DEPENDS=	nlohmann-json>=3.6.1:devel/nlohmann-json
 #RUN_DEPENDS=
 LIB_DEPENDS+=	libcal3d.so:graphics/cal3d \
+		libiconv.so:converters/libiconv \
 		libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis \
 		libvorbisfile.so:audio/libvorbis \
 		libpng.so:graphics/png
 
-USES=		cmake ssl openal iconv \
-		compiler:c++17-lang gnome \
-		desktop-file-utils \
+USES=		cmake ssl openal \
+		compiler:c++17-lang gl gnome \
 		openal:al,alut sdl xorg \
 		pkgconfig:build
 
@@ -51,7 +51,7 @@ USE_XORG+=	ice sm x11 xcb xres xshmfence xau xaw xcomposite \
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	raduprv
 GH_PROJECT=	Eternal-Lands
-GH_TAGNAME=	8b876214305defbdbee1e7cf7042a39bbf443bfd
+GH_TAGNAME=	a1b30970a038ab336a3cbcb0d040eed7239ea6e7
 
 #CMAKE_MODULE_LINKER_FLAGS=
 #CMAKE_SHARED_LINKER_FLAGS=
