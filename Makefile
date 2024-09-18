@@ -1,5 +1,5 @@
 PORTNAME=	Eternal-Lands
-DISTVERSION=	g20230416
+DISTVERSION=	g20240731
 CATEGORIES=	games
 PKGNAMESUFFIX=	-dev
 DISTNAME=	${GH_TAGNAME}
@@ -25,7 +25,7 @@ USES=		cmake ssl openal \
 		pkgconfig:build
 
 #LDFLAGS+=	-L${ICONV_LIB}
-LDFLAGS+=       -L${LOCALBASE}/lib ${ICONV_LIB} -lX11
+LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB} -lX11
 CONFLICTS=	el
 CMAKE_ARGS+=	-DIconv_LIBRARIES="-L${LOCALBASE}/lib -liconv" \
 		-DBUILD_UNITTESTS="TRUE" \
@@ -51,7 +51,7 @@ USE_XORG+=	ice sm x11 xcb xres xshmfence xau xaw xcomposite \
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	raduprv
 GH_PROJECT=	Eternal-Lands
-GH_TAGNAME=	a1b30970a038ab336a3cbcb0d040eed7239ea6e7
+GH_TAGNAME=	d38703cb9306bdcba9aa8ede479f5aaaeee0d59d
 
 #CMAKE_MODULE_LINKER_FLAGS=
 #CMAKE_SHARED_LINKER_FLAGS=
